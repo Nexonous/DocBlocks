@@ -8,10 +8,8 @@ import Configuration from './objects/configuration'
  * @param configuration The configuration json file.
  */
 function converter (configuration: string) {
-  const configFile: Configuration = JSON.parse(readFileSync(configuration).toString())
-
-  console.log(configFile.output)
-  console.log(configFile.inputs)
+  const config = Configuration.fromJSON(JSON.parse(readFileSync(configuration).toString()))
+  config.generate()
 }
 
 export = converter
