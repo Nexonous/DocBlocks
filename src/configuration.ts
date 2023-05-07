@@ -16,7 +16,7 @@ class Configuration {
     this.project = ''
     this.template = 'template'
     this.output = ''
-    this.index = ''
+    this.index = 'README.md'
     this.inputs = []
   }
 
@@ -24,17 +24,8 @@ class Configuration {
    * Process all the inputs in the configuration.
    */
   public generate () {
-    const generator = new Generator(this.template, this.output)
-
-    for (const input of this.inputs) {
-      if (input.isDirectory()) {
-        generator.generateFromDirectory(input)
-      } else {
-        generator.generateFromGit(input)
-      }
-    }
-
-    generator.generateIndexFile(this.project, this.inputs)
+    const generator = new Generator(this.project, this.template, this.output, this.index, this.inputs)
+    generator.generate()
   }
 
   /**

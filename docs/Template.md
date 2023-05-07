@@ -7,4 +7,4 @@ The template directory should contain the following files (in the given structur
 - `template.html`: This file is used to store the converted HTML content. The generator uses 3 variables.
   - `{content}`: This variable is replaced with the converted HTML content.
   - `{title}`: Title of the page.
-  - `{relatives}`: The relative pages of the input.
+  - `{navigation}`: The relative pages of the website.
