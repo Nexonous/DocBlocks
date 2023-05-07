@@ -1,0 +1,32 @@
+{
+  "name": "docblocks",
+  "version": "1.0.0",
+  "description": "Documentation website builder.",
+  "main": "out/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc && node out/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nexonous/DocBlocks.git"
+  },
+  "author": "Nexonous",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Nexonous/DocBlocks/issues"
+  },
+  "homepage": "https://github.com/Nexonous/DocBlocks#readme",
+  "devDependencies": {
+    "@types/marked": "^4.3.0",
+    "@types/node": "^20.1.0",
+    "@typescript-eslint/eslint-plugin": "^5.59.2",
+    "@typescript-eslint/parser": "^5.59.2",
+    "eslint": "^8.40.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^15.7.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "typescript": "^5.0.4"
+  }
+}
