@@ -26,6 +26,8 @@ npm install
 npm start 'path/to/<configuration file>.json'
 ```
 
+For more information about the configuration JSON file, please read the [Configuration](Configuration.md) documentation.
+
 ## License
 
 This repository is licensed under MIT.
