@@ -1,0 +1,23 @@
+{
+  "project": "DocBlocks",
+  "output": "out/public",
+  "inputs": [
+    {
+      "name": "Project A",
+      "directory": "testing/Project A"
+    },
+    {
+      "name": "Project B",
+      "directory": "testing/Project B"
+    },
+    {
+      "name": "marked",
+      "git": "https://github.com/markedjs/marked/tree/master/docs",
+      "auth": ""
+    },
+    {
+      "name": "docs",
+      "directory": "docs"
+    }
+  ]
+}

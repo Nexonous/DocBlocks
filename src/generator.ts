@@ -73,6 +73,7 @@ class Generator {
    * @param input The input to generate from.
    */
   private async generateFromGit (input: Input) {
+    console.log('Generating HTML files from git links are not supported for now!')
   }
 
   /**
@@ -135,26 +136,84 @@ class Generator {
       const files = this.getAllFiles(input.directory)
       if (files.length === 0) { continue }
 
-      html += '<li>' + input.name
-      html += '<ul>'
-
       const inputDirectory = path.join(input.directory)
       const outputDirectory = path.join(this.output, input.name)
+      const indexFile = this.findIndexFileOfDirectory(relative, outputDirectory, input.directory)
 
-      for (const file of files) {
-        const filename = file.replace(inputDirectory + path.sep, '').replace('.md', '')
+      if (indexFile != null) {
+        html += `<li><a href="${indexFile}">${input.name}</a>`
+      } else {
+        html += '<li>' + input.name
+      }
+
+      html += '<ul>'
+
+      this.walkDirectoryRecursively(inputDirectory, (file: string, directory: string, level: number) => {
+        const filename = path.parse(file.replace(inputDirectory + path.sep, '')).name
         const filepath = path.relative(relative, path.join(outputDirectory, path.parse(file).name + '.html'))
+        if (indexFile != null && filepath === indexFile) { return }
 
-        html += '<li>'
+        html += '<li class="file">'
         html += `<a href="${filepath}">${filename}</a>`
         html += '</li>'
-      }
+      },
+      (directory: string) => {
+        const indexFile = this.findIndexFileOfDirectory(relative, outputDirectory, directory)
+
+        directory = path.parse(directory).name
+        if (indexFile != null) {
+          html += `<li class="directory"><a href="${indexFile}">${directory}</a></li>`
+        } else {
+          html += `<li class="directory">${directory}</li>`
+        }
+        html += '<ul>'
+      }, () => {
+        html += '</ul>'
+      })
 
       html += '</ul>'
       html += '</li>'
     }
 
     return html + '</ul>'
+  }
+
+  /**
+   * Find the a index file in a given directory.
+   *
+   * @param relative The relative path to get the index file.
+   * @param outputDirectory The output directory.
+   * @param directory The directory to search in.
+   * @returns The index file directory. This could be null in which case the index file is not found.
+   */
+  private findIndexFileOfDirectory (relative: string, outputDirectory: string, directory: string): string | null {
+    let indexFile = null
+    if (existsSync(directory)) {
+      const files = readdirSync(directory)
+      files.forEach(file => {
+        if (file.toLowerCase() === 'index.md') {
+          indexFile = path.relative(relative, path.join(outputDirectory, path.parse(file).name + '.html'))
+        }
+      })
+    }
+
+    return indexFile
+  }
+
+  private walkDirectoryRecursively (directory: string, walker: (file: string, directory: string, level: number) => void, onDirectoryPush: (directory: string) => void, onDirectoryPop: () => void, level: number = 0) {
+    if (existsSync(directory)) {
+      readdirSync(directory).forEach(file => {
+        const name = path.join(directory, file)
+
+        if (statSync(name).isDirectory()) {
+          onDirectoryPush(name)
+          this.walkDirectoryRecursively(name, walker, onDirectoryPush, onDirectoryPop, level + 1)
+          onDirectoryPop()
+        } else {
+          walker(name, directory, level)
+        }
+      })
+    }
   }
 }
 
