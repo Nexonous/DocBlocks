@@ -25,9 +25,11 @@ The configuration file is a JSON object which contains mandatory and additional 
   "output": "public",
   "inputs": [
     {
+      "name": "docs",
       "directory": "docs"
     },
     {
+      "name": "docs",
       "git": "https://github.com/markedjs/marked/tree/master/docs",
       "auth": "personal-authentication-token-for-github"
     }

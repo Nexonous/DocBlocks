@@ -13,6 +13,7 @@ After installing Node.js, using this tool is fairly straight forward. For any pr
   "output": "/public",
   "inputs": [
     {
+      "name": "docs",
       "directory": "/docs"
     }
   ]
