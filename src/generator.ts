@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'fs'
+import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'fs'
 import path from 'path'
 import Input from './input'
 import Showdown, { Converter } from 'showdown'
@@ -12,6 +12,7 @@ class Generator {
   private output: string
   private index: string
   private inputs: Input[]
+  private base: string
   private converter: Showdown.Converter
 
   /**
@@ -25,10 +26,11 @@ class Generator {
    */
   constructor (project: string, template: string, output: string, index: string, inputs: Input[]) {
     this.project = project
-    this.template = readFileSync(path.join(template, 'template.html')).toString()
+    this.template = template
     this.output = output
     this.index = index
     this.inputs = inputs
+    this.base = readFileSync(path.join(template, 'template.html')).toString()
     this.converter = new Converter()
   }
 
@@ -45,6 +47,7 @@ class Generator {
     }
 
     this.generateIndexFile()
+    this.copyTemplateFolders()
   }
 
   /**
@@ -53,17 +56,24 @@ class Generator {
    * @param input The input to generate from.
   */
   private async generateFromDirectory (input: Input) {
-    const outputDirectory = path.join(this.output, input.name)
-    this.createDirectory(outputDirectory)
+    for (const file of this.getAllFiles(input.directory)) {
+      const outputDirectory = path.join(this.output, input.name, path.parse(file).dir.replace(path.join(input.directory), ''))
+      const outputFile = path.join(outputDirectory, path.parse(file).name + '.html')
 
-    const files = this.getAllFiles(input.directory)
-    const navigation = this.prepareNavigation(outputDirectory)
-    for (const file of files) {
-      let content = this.template.replaceAll('{title}', input.name)
-      content = content.replaceAll('{navigation}', navigation)
-      content = content.replaceAll('{content}', this.converter.makeHtml(readFileSync(file).toString()))
-      content = content.replaceAll(/href="(?!www\.|(?:http|ftp)s?)(.*).md"/g, 'href="$1.html"')
-      writeFileSync(path.join(outputDirectory, path.parse(file).name + '.html'), content)
+      this.createDirectory(outputDirectory)
+      this.createDirectory(outputFile)
+
+      // Convert just the markdown files and copy the rest of them.
+      if (file.endsWith('.md')) {
+        let content = this.base.replaceAll('{title}', input.name)
+        content = content.replaceAll('{navigation}', this.prepareNavigation(outputDirectory))
+        content = content.replaceAll('{content}', this.converter.makeHtml(readFileSync(file).toString()))
+        content = content.replaceAll(/href="(?!www\.|(?:http|ftp)s?)(.*).md"/g, 'href="$1.html"')
+
+        writeFileSync(outputFile, content)
+      } else {
+        copyFileSync(file, path.join(outputDirectory, outputFile))
+      }
     }
   }
 
@@ -80,11 +90,20 @@ class Generator {
    * Generate the main index file.
    */
   private async generateIndexFile () {
-    let content = this.template.replaceAll('{title}', this.project)
+    let content = this.base.replaceAll('{title}', this.project)
     content = content.replaceAll('{navigation}', this.prepareNavigation(this.output))
     content = content.replaceAll('{content}', this.converter.makeHtml(readFileSync(this.index).toString()))
     content = content.replaceAll(/href="(?!www\.|(?:http|ftp)s?)(.*).md"/g, 'href="$1.html"')
     writeFileSync(path.join(this.output, 'index.html'), content)
+  }
+
+  /**
+   * Copy the assets, scripts and styles from the template folder to the output directory.
+   */
+  private async copyTemplateFolders () {
+    this.copyFiles(path.join(this.template, 'assets'), path.join(this.output, 'assets'))
+    this.copyFiles(path.join(this.template, 'scripts'), path.join(this.output, 'scripts'))
+    this.copyFiles(path.join(this.template, 'styles'), path.join(this.output, 'styles'))
   }
 
   /**
@@ -111,12 +130,34 @@ class Generator {
   }
 
   /**
+   * Recursively copy files from the source directory to the destination directory.
+   *
+   * @param source The source directory to copy from.
+   * @param destination The destination directory to copy to.
+   */
+  private copyFiles (source: string, destination: string) {
+    this.createDirectory(destination)
+    if (existsSync(source)) {
+      readdirSync(source).forEach(entry => {
+        const sourceName = path.join(source, entry)
+        const destinationName = path.join(destination, entry)
+
+        if (statSync(sourceName).isDirectory()) {
+          this.copyFiles(sourceName, destinationName)
+        } else {
+          copyFileSync(sourceName, destinationName)
+        }
+      })
+    }
+  }
+
+  /**
    * Create the directory if does not exist.
    *
    * @param directory The directory to create.
    */
   private createDirectory (directory: string) {
-    if (!existsSync(directory)) { mkdirSync(directory, { recursive: true }) }
+    if (path.parse(directory).ext.length === 0 && !existsSync(directory)) { mkdirSync(directory, { recursive: true }) }
   }
 
   /**
@@ -127,37 +168,29 @@ class Generator {
    */
   private prepareNavigation (relative: string): string {
     let html = '<ul>'
-
-    html += '<li>'
-    html += `<a href="${path.relative(relative, path.join(this.output, 'index.html'))}">Home</a>`
-    html += '</li>'
+    html += `<li><a href="${path.relative(relative, path.join(this.output, 'index.html'))}">Home</a></li>`
 
     for (const input of this.inputs) {
       const files = this.getAllFiles(input.directory)
       if (files.length === 0) { continue }
 
       const inputDirectory = path.join(input.directory)
-      const outputDirectory = path.join(this.output, input.name)
-      const indexFile = this.findIndexFileOfDirectory(relative, outputDirectory, input.directory)
-
-      if (indexFile != null) {
-        html += `<li><a href="${indexFile}">${input.name}</a>`
-      } else {
-        html += '<li>' + input.name
-      }
 
       html += '<ul>'
 
+      // Walk through the source tree recursively and process the files.
       this.walkDirectoryRecursively(inputDirectory, (file: string, directory: string, level: number) => {
-        const filename = path.parse(file.replace(inputDirectory + path.sep, '')).name
-        const filepath = path.relative(relative, path.join(outputDirectory, path.parse(file).name + '.html'))
-        if (indexFile != null && filepath === indexFile) { return }
+        // Skip the index files since it's already given to the directory name.
+        if (path.parse(file).name.toLowerCase() === 'index' && path.parse(file).ext.toLowerCase() === '.md') { return }
 
-        html += '<li class="file">'
-        html += `<a href="${filepath}">${filename}</a>`
-        html += '</li>'
+        const outputDirectory = path.join(this.output, input.name, path.parse(file).dir.replace(path.join(input.directory), ''))
+        const filepath = path.relative(relative, path.join(outputDirectory, path.parse(file).name + '.html'))
+        const filename = path.parse(file.replace(inputDirectory + path.sep, '')).name
+
+        html += `<li class="file"><a href="${filepath}">${filename}</a></li>`
       },
       (directory: string) => {
+        const outputDirectory = path.join(this.output, directory)
         const indexFile = this.findIndexFileOfDirectory(relative, outputDirectory, directory)
 
         directory = path.parse(directory).name
@@ -172,10 +205,10 @@ class Generator {
       })
 
       html += '</ul>'
-      html += '</li>'
     }
 
-    return html + '</ul>'
+    html += '</ul>'
+    return html
   }
 
   /**
@@ -200,19 +233,28 @@ class Generator {
     return indexFile
   }
 
+  /**
+   * Recursively walk through a directory.
+   *
+   * @param directory The directory to walk.
+   * @param walker The directory walker. This method gets called on each file.
+   * @param onDirectoryPush This method gets called when a new directory is found and is about to walk through all the files in it.
+   * @param onDirectoryPop This method gets called once we're done walking on a directory.
+   * @param level The level of the current walking.
+   */
   private walkDirectoryRecursively (directory: string, walker: (file: string, directory: string, level: number) => void, onDirectoryPush: (directory: string) => void, onDirectoryPop: () => void, level: number = 0) {
     if (existsSync(directory)) {
+      onDirectoryPush(directory)
       readdirSync(directory).forEach(file => {
         const name = path.join(directory, file)
 
         if (statSync(name).isDirectory()) {
-          onDirectoryPush(name)
           this.walkDirectoryRecursively(name, walker, onDirectoryPush, onDirectoryPop, level + 1)
-          onDirectoryPop()
         } else {
           walker(name, directory, level)
         }
       })
+      onDirectoryPop()
     }
   }
 }

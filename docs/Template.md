@@ -8,3 +8,6 @@ The template directory should contain the following files (in the given structur
   - `{content}`: This variable is replaced with the converted HTML content.
   - `{title}`: Title of the page.
   - `{navigation}`: The relative pages of the website.
+- `assets/`: This folder contains all the global assets used by the HTML files.
+- `scripts/`: This folder contains all the global scripts used by the HTML files.
+- `styles/`: This folder contains all the global styles used by the HTML files.
