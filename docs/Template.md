@@ -11,3 +11,5 @@ The template directory should contain the following files (in the given structur
 - `assets/`: This folder contains all the global assets used by the HTML files.
 - `scripts/`: This folder contains all the global scripts used by the HTML files.
 - `styles/`: This folder contains all the global styles used by the HTML files.
+
+Note that in order to use the global scripts and assets, the links must start with a `'/'` (ie: `'/path/to/asset'`). Else the assets will be considered to be in a relative directory.

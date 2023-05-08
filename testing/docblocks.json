@@ -4,11 +4,11 @@
   "inputs": [
     {
       "name": "Project A",
-      "directory": "testing/Project A"
+      "directory": "Project A"
     },
     {
       "name": "Project B",
-      "directory": "testing/Project B"
+      "directory": "Project B"
     },
     {
       "name": "marked",
@@ -17,7 +17,7 @@
     },
     {
       "name": "docs",
-      "directory": "docs"
+      "directory": "../docs"
     }
   ]
 }

@@ -1,3 +1,4 @@
+import path from 'path'
 import Generator from './generator'
 import Input from './input'
 
@@ -26,6 +27,19 @@ class Configuration {
   public generate () {
     const generator = new Generator(this.project, this.template, this.output, this.index, this.inputs)
     generator.generate()
+  }
+
+  /**
+   * Configure all the inputs using the relative path.
+   *
+   * @param relative The relative path of the configuration file.
+   */
+  public configureRelativePath (relative: string) {
+    for (const input of this.inputs) {
+      if (input.isDirectory()) {
+        input.directory = path.join(relative, input.directory)
+      }
+    }
   }
 
   /**
