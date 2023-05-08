@@ -65,9 +65,14 @@ class Generator {
 
       // Convert just the markdown files and copy the rest of them.
       if (file.endsWith('.md')) {
+        const html = this.converter.makeHtml(readFileSync(file).toString())
+
         let content = this.base.replaceAll('{title}', input.name)
         content = content.replaceAll('{navigation}', this.prepareNavigation(outputDirectory))
-        content = content.replaceAll('{content}', this.converter.makeHtml(readFileSync(file).toString()))
+        content = content.replaceAll('{jump}', this.generateJumpTable(html))
+        content = content.replaceAll('{project}', this.project)
+        content = content.replaceAll('{file}', path.parse(file).name)
+        content = content.replaceAll('{content}', html)
         content = content.replaceAll(/href="(?!www\.|(?:http|ftp)s?)(.*).md"/g, 'href="$1.html"')
 
         writeFileSync(outputFile, content)
@@ -90,9 +95,14 @@ class Generator {
    * Generate the main index file.
    */
   private async generateIndexFile () {
+    const html = this.converter.makeHtml(readFileSync(this.index).toString())
+
     let content = this.base.replaceAll('{title}', this.project)
     content = content.replaceAll('{navigation}', this.prepareNavigation(this.output))
-    content = content.replaceAll('{content}', this.converter.makeHtml(readFileSync(this.index).toString()))
+    content = content.replaceAll('{jump}', this.generateJumpTable(html))
+    content = content.replaceAll('{project}', this.project)
+    content = content.replaceAll('{file}', path.parse(this.index).name)
+    content = content.replaceAll('{content}', html)
     content = content.replaceAll(/href="(?!www\.|(?:http|ftp)s?)(.*).md"/g, 'href="$1.html"')
     writeFileSync(path.join(this.output, 'index.html'), content)
   }
@@ -256,6 +266,30 @@ class Generator {
       })
       onDirectoryPop()
     }
+  }
+
+  /**
+   * Generate the jump table from the generated HTML data.
+   *
+   * @param content The converted HTML data.
+   * @returns The jump table.
+   */
+  private generateJumpTable (content: string): string {
+    let jump = ''
+    let level: number = -1
+    for (const item of content.matchAll(/<h(\d) id="(.*)">(.*)<\/h\d>/g)) {
+      const currentValue = +item[1]
+      if (currentValue > level) {
+        jump += '<ul>'
+      } else if (currentValue < level) {
+        jump += '</ul>'
+      }
+
+      level = currentValue
+      jump += `<li><a href="#${item[2]}">${item[3]}</a></li>`
+    }
+
+    return jump
   }
 }
 

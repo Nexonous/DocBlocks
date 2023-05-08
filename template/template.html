@@ -5,13 +5,36 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>{title}</title>
+
+  <link rel="stylesheet"
+    href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/tomorrow-night-bright.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+
   <link rel="stylesheet" href="/styles/main.css" />
   <script src="/scripts/main.js"></script>
 </head>
 
 <body>
-  <div id="navigation">{navigation}</div>
-  <div id="content">{content}</div>
+  <div id="topbar">
+    <div id="title">
+      {project}
+      <div class="vseperator"></div>
+      {title}
+      <div class="vseperator"></div>
+      {file}
+    </div>
+  </div>
+  <aside>
+    <div id="navigation">
+      <h1>Navigation</h1>
+      {navigation}
+    </div>
+  </aside>
+  <main>
+    <div id="content">{content}</div>
+    <div id="jump">{jump}</div>
+  </main>
+  <script>hljs.highlightAll();</script>
 </body>
 
 </html>

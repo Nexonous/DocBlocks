@@ -4,10 +4,13 @@ Template is a directory that contains some files that are used by the generator 
 
 The template directory should contain the following files (in the given structure).
 
-- `template.html`: This file is used to store the converted HTML content. The generator uses 3 variables.
+- `template.html`: This file is used to store the converted HTML content. The generator uses the following variables.
   - `{content}`: This variable is replaced with the converted HTML content.
   - `{title}`: Title of the page.
   - `{navigation}`: The relative pages of the website.
+  - `{jump}`: The jump table containing quick access to all the headings.
+  - `{project}`: The project name.
+  - `{file}`: The file name (without the extension).
 - `assets/`: This folder contains all the global assets used by the HTML files.
 - `scripts/`: This folder contains all the global scripts used by the HTML files.
 - `styles/`: This folder contains all the global styles used by the HTML files.
