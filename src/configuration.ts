@@ -30,11 +30,15 @@ class Configuration {
   }
 
   /**
-   * Configure all the inputs using the relative path.
+   * Configure all the inputs, template, index and output using the relative path.
    *
    * @param relative The relative path of the configuration file.
    */
   public configureRelativePath (relative: string) {
+    this.template = path.join(relative, this.template)
+    this.output = path.join(relative, this.output)
+    this.index = path.join(relative, this.index)
+
     for (const input of this.inputs) {
       if (input.isDirectory()) {
         input.directory = path.join(relative, input.directory)

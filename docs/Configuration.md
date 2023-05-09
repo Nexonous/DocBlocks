@@ -9,7 +9,7 @@ The configuration file is a JSON object which contains mandatory and additional 
 5. `"inputs"`: This is an array of objects that contains the input data. The input data are of two types.
    1. Directory input.
       - This contains a directory where all the Markdown files will be recursively converted and stored in the output directory.
-      - The `"directory"` key is required. Make sure that the given directory is relative to configuration file.
+      - The `"directory"` key is required.
       - The `"name"` key is required that tells the generator the folder name to insert all the generated HTML files to.
    2. Git input.
       - Git inputs are git links that are used to recursively download its contents and converted.
@@ -18,6 +18,8 @@ The configuration file is a JSON object which contains mandatory and additional 
       - The `"name"` key is required that tells the generator the folder name to insert all the generated HTML files to.
       - Note that this feature is not supported in the current version of DocBlocks.
   
+Make sure that all given directories are relative to the configuration file.
+
 ## Example configuration file
 
 ```json
@@ -36,3 +38,5 @@ The configuration file is a JSON object which contains mandatory and additional 
   ]
 }
 ```
+
+Note that when generating the HTML files, directories and file names with spaces will be replaced with `'-'`, ie: `path/to/a totally random/random file.md` will be formatted to `path/to/a-totally-random/random-file.md`.

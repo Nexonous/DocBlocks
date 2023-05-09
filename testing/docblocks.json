@@ -1,6 +1,8 @@
 {
   "project": "DocBlocks",
-  "output": "out/public",
+  "output": "../out/public",
+  "template": "../template",
+  "index": "../README.md",
   "inputs": [
     {
       "name": "Project A",

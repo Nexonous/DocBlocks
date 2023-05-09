@@ -1,10 +1,11 @@
 :root {
-  --main-bg-color: #0a282e;
+  --main-bg-color: #011627;
   --line-color: #D7D9CE;
   --link-color: #119DA4;
 
-  /* --default-font-color: #e6e9e9; */
-  --default-font-color: white;
+  --default-font-color: #f5f3f5;
+  /* --default-font-color: #ebf2fa; */
+  /* --default-font-color: white; */
 }
 
 body {
@@ -111,6 +112,28 @@ hr {
   border-width:0 0 1px 0;
   border-style: solid;
   border-color: var(--line-color);
+}
+
+#content table {
+  border-collapse: collapse;
+}
+
+#content th, #content td {  
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: #D7D9CE44;
+
+  padding: 15px 10px 15px 10px;
+}
+
+#content th {
+  color: #888888;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+#content td {
+  font-size: 14px;
 }
 
 #jump {

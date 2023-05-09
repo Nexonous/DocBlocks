@@ -57,8 +57,8 @@ class Generator {
   */
   private async generateFromDirectory (input: Input) {
     for (const file of this.getAllFiles(input.directory)) {
-      const outputDirectory = path.join(this.output, input.name, path.parse(file).dir.replace(path.join(input.directory), ''))
-      const outputFile = path.join(outputDirectory, path.parse(file).name + '.html')
+      const outputDirectory = path.join(this.output, input.name, path.parse(file).dir.replace(path.join(input.directory), '')).replaceAll(' ', '-')
+      const outputFile = path.join(outputDirectory, path.parse(file).name.replaceAll(' ', '-') + '.html')
 
       this.createDirectory(outputDirectory)
       this.createDirectory(outputFile)
@@ -193,14 +193,14 @@ class Generator {
         // Skip the index files since it's already given to the directory name.
         if (path.parse(file).name.toLowerCase() === 'index' && path.parse(file).ext.toLowerCase() === '.md') { return }
 
-        const outputDirectory = path.join(this.output, input.name, path.parse(file).dir.replace(path.join(input.directory), ''))
-        const filepath = path.relative(relative, path.join(outputDirectory, path.parse(file).name + '.html'))
+        const outputDirectory = path.join(this.output, input.name, path.parse(file).dir.replace(path.join(input.directory), '')).replaceAll(' ', '-')
+        const filepath = path.relative(relative, path.join(outputDirectory, path.parse(file).name.replaceAll(' ', '-') + '.html'))
         const filename = path.parse(file.replace(inputDirectory + path.sep, '')).name
 
         html += `<li class="file"><a href="${filepath}">${filename}</a></li>`
       },
       (directory: string) => {
-        const outputDirectory = path.join(this.output, directory)
+        const outputDirectory = path.join(this.output, directory).replaceAll(' ', '-')
         const indexFile = this.findIndexFileOfDirectory(relative, outputDirectory, directory)
 
         directory = path.parse(directory).name
