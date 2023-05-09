@@ -1,7 +1,10 @@
 {
 	"cSpell.words": [
-		"docblocks"
-	],
+    "arrowseperator",
+    "docblocks",
+    "topbar",
+    "vseperator"
+  ],
 	"editor.tabSize": 2,
 	"editor.insertSpaces": true,
 	"eslint.validate": [

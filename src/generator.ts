@@ -31,7 +31,7 @@ class Generator {
     this.index = index
     this.inputs = inputs
     this.base = readFileSync(path.join(template, 'template.html')).toString()
-    this.converter = new Converter()
+    this.converter = new Converter({ strikethrough: true, tables: true })
   }
 
   /**
