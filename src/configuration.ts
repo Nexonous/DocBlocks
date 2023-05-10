@@ -23,10 +23,12 @@ class Configuration {
 
   /**
    * Process all the inputs in the configuration.
+   *
+   * @return A promise to wait for all the prior conversions.
    */
   public generate () {
     const generator = new Generator(this.project, this.template, this.output, this.index, this.inputs)
-    generator.generate()
+    return generator.generate()
   }
 
   /**

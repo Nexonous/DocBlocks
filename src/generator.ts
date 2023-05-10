@@ -1,7 +1,8 @@
-import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'fs'
+import { copyFileSync, existsSync, lstatSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'fs'
+import { readFile, writeFile, copyFile } from 'fs/promises'
 import path from 'path'
 import Input from './input'
-import Showdown, { Converter } from 'showdown'
+import { Converter } from 'showdown'
 
 /**
  * Generator class.
@@ -13,7 +14,6 @@ class Generator {
   private index: string
   private inputs: Input[]
   private base: string
-  private converter: Showdown.Converter
 
   /**
    * Constructor.
@@ -31,43 +31,74 @@ class Generator {
     this.index = index
     this.inputs = inputs
     this.base = readFileSync(path.join(template, 'template.html')).toString()
-    this.converter = new Converter({ strikethrough: true, tables: true })
   }
 
   /**
    * Generate the HTML files.
+   *
+   * @return The promises to wait for.
    */
-  async generate () {
+  public generate () {
+    let workers: Promise<void>[] = []
     for (const input of this.inputs) {
       if (input.isDirectory()) {
-        this.generateFromDirectory(input)
+        workers = workers.concat(this.generateFromDirectory(input))
       } else {
-        this.generateFromGit(input)
+        workers = workers.concat(this.generateFromGit(input))
       }
     }
 
     this.generateIndexFile()
     this.copyTemplateFolders()
+
+    return Promise.all(workers)
   }
 
   /**
    * Generate the HTML files and save them in the output directory.
    *
    * @param input The input to generate from.
+   * @return The worker promises.
   */
-  private async generateFromDirectory (input: Input) {
+  private generateFromDirectory (input: Input) {
+    const workers: Promise<void>[] = []
     for (const file of this.getAllFiles(input.directory)) {
-      const outputDirectory = path.join(this.output, input.name, path.parse(file).dir.replace(path.join(input.directory), '')).replaceAll(' ', '-')
-      const outputFile = path.join(outputDirectory, path.parse(file).name.replaceAll(' ', '-') + '.html')
+      workers.push(this.generateFromFile(file, input.name, input.directory))
+    }
 
-      this.createDirectory(outputDirectory)
-      this.createDirectory(outputFile)
+    return workers
+  }
 
-      // Convert just the markdown files and copy the rest of them.
-      if (file.endsWith('.md')) {
-        const html = this.converter.makeHtml(readFileSync(file).toString())
+  /**
+   * Generate the HTML file from a Markdown file.
+   *
+   * @param file The file path to generate from.
+   * @param name The output directory name.
+   * @param directory The input directory.
+   * @return The promise of the worker.
+   */
+  async generateFromFile (file: string, name: string, directory: string) {
+    const outputDirectory = path.join(this.output, name, path.parse(file).dir.replace(path.join(directory), '')).replaceAll(' ', '-')
+    const outputFile = path.join(outputDirectory, path.parse(file).name.replaceAll(' ', '-') + '.html')
 
-        let content = this.base.replaceAll('{title}', input.name)
+    this.createDirectory(outputDirectory)
+    this.createDirectory(outputFile)
+
+    // Try not to update the files if we don't need to.
+    if (existsSync(outputFile) && (lstatSync(outputFile).mtime > lstatSync(path.join(this.template, 'template.html')).mtime || lstatSync(outputFile).mtime > lstatSync(file).mtime)) {
+      console.log('Skipping', file)
+      return
+    }
+
+    // Convert just the markdown files and copy the rest of them.
+    if (file.endsWith('.md')) {
+      return readFile(file).then((data) => {
+        console.log('Converting', `"${file}"`)
+
+        const converter = new Converter({ strikethrough: true, tables: true })
+        const html = converter.makeHtml(data.toString())
+
+        let content = this.base.replaceAll('{title}', name)
         content = content.replaceAll('{navigation}', this.prepareNavigation(outputDirectory))
         content = content.replaceAll('{jump}', this.generateJumpTable(html))
         content = content.replaceAll('{project}', this.project)
@@ -75,10 +106,10 @@ class Generator {
         content = content.replaceAll('{content}', html)
         content = content.replaceAll(/href="(?!www\.|(?:http|ftp)s?)(.*).md"/g, 'href="$1.html"')
 
-        writeFileSync(outputFile, content)
-      } else {
-        copyFileSync(file, path.join(outputDirectory, outputFile))
-      }
+        return writeFile(outputFile, content)
+      })
+    } else {
+      return copyFile(file, path.join(outputDirectory, outputFile))
     }
   }
 
@@ -95,7 +126,8 @@ class Generator {
    * Generate the main index file.
    */
   private async generateIndexFile () {
-    const html = this.converter.makeHtml(readFileSync(this.index).toString())
+    const converter = new Converter({ strikethrough: true, tables: true })
+    const html = converter.makeHtml(readFileSync(this.index).toString())
 
     let content = this.base.replaceAll('{title}', this.project)
     content = content.replaceAll('{navigation}', this.prepareNavigation(this.output))
