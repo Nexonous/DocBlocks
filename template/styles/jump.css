@@ -1,0 +1,36 @@
+#jump {
+  max-height: 80%;
+  min-width: 15%;
+  width: 15%;
+  top: 10%;
+  right: 1%;
+  position: fixed;
+
+  padding-top: 1%;
+  padding-bottom: 1%;
+}
+
+#jump li {
+  width: 100%;
+  list-style: none;
+  padding-left: 10%;
+  padding-bottom: 1%;
+}
+
+#jump ul {
+  padding-left: 1rem;
+}
+
+#jump a,
+#jump a:visited,
+#jump a:hover {
+  font-size: 14px;
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+#jump a:hover {
+  font-size: 14px;
+  color: var(--link-color);
+  text-decoration: underline;
+}

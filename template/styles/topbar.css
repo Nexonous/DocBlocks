@@ -1,0 +1,67 @@
+:root {
+  --topbar-font-size: 15px;
+}
+
+#topbar {
+  height: 5%;
+  width: 100%;
+  margin-top: 0;
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  background-color: var(--main-bg-color);
+  padding-left: 1%;
+
+  border-color: var(--border-color);
+  border-width: 0 0 1px 0;
+  border-style: solid;
+
+  display: flex;
+  list-style: none;
+
+  overflow: hidden;
+}
+
+#topbar li,
+#topbar a,
+#topbar a:visited {
+  float: left;
+
+  padding-left: 1%;
+  padding-right: 1%;
+
+  color: var(--default-font-color);
+
+  text-decoration: none;
+  font-size: var(--topbar-font-size);
+}
+
+#topbar li:hover,
+#topbar a:hover {
+  float: left;
+
+  padding-left: 1%;
+  padding-right: 1%;
+
+  color: #FFC857;
+  cursor: pointer;
+
+  font-size: var(--topbar-font-size);
+}
+
+#topbar img {
+  height: 50px;
+}
+
+#topbar #title,
+#topbar #search {
+  display: flex;
+  right: 0;
+  height: 100%;
+
+  align-items: center;
+  background-color: var(--main-bg-color);
+
+  border-style: none;
+}
