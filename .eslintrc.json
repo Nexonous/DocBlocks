@@ -12,8 +12,12 @@
         "ecmaVersion": "latest"
     },
     "plugins": [
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "html"
     ],
     "rules": {
-    }
+    },
+    "ignorePatterns": [
+      "**/*.html"
+    ]
 }

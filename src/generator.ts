@@ -177,8 +177,7 @@ class Generator {
    * @returns The navigation HTML.
    */
   private prepareNavigation (relative: string): string {
-    let html = '<ul>'
-    html += `<li><a href="${path.relative(relative, path.join(this.output, 'index.html'))}">Home</a></li>`
+    let html = ''
 
     for (const input of this.inputs) {
       const files = this.getAllFiles(input.directory)
@@ -217,7 +216,6 @@ class Generator {
       html += '</ul>'
     }
 
-    html += '</ul>'
     return html
   }
 

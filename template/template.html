@@ -18,17 +18,17 @@
   <link rel="stylesheet" href="/styles/code.css" />
   <link rel="stylesheet" href="/styles/topbar.css" />
   <link rel="stylesheet" href="/styles/navigation.css" />
+  <link rel="stylesheet" href="/styles/search-box.css" />
   <link rel="stylesheet" href="/styles/content.css" />
   <link rel="stylesheet" href="/styles/jump.css" />
   <link rel="stylesheet" href="/styles/footer.css" />
-  <script src="/scripts/main.js"></script>
 </head>
 
 <body>
   <ul id="topbar">
     <li><a href="https://nexonous.com" target="_blank"><img src="/assets/Logo.png" alt="Nexonous Logo" /></a></li>
     <li><a id="title" href="/index.html">{project}</a></li>
-    <li><a id="search" href="/index.html">Search</a></li>
+    <li id="search">Search</li>
   </ul>
 
   <aside>
@@ -36,6 +36,17 @@
   </aside>
 
   <main>
+    <div id="search-backdrop">
+      <div id="search-box">
+        <form role="search">
+          <label>
+            <input id="search-input" type="search" placeholder="Search in Docs">
+          </label>
+          <button id="cancel-search" type="reset">Cancel</button>
+        </form>
+        <div id="search-output"></div>
+      </div>
+    </div>
     <div id="content">{content}</div>
     <div id="jump">{jump}</div>
   </main>
@@ -46,7 +57,12 @@
     </p>
   </footer>
 
-  <script>hljs.highlightAll();</script>
+  <script>
+    hljs.highlightAll()
+  </script>
+
+  <script src="/scripts/main.js"></script>
+  <script src="/scripts/search.js"></script>
 </body>
 
 </html>

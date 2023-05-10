@@ -1,12 +1,12 @@
 body {
   background-color: var(--main-bg-color);
-  color: var(--default-font-color);
+  color: var(--font-color);
   font-family: 'Roboto', sans-serif;
 }
 
 p,
 li {
-  color: var(--default-font-color);
+  color: var(--font-color);
 }
 
 hr {

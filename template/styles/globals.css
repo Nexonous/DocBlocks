@@ -4,13 +4,14 @@
   --link-color: #119DA4;
   --border-color: #D7D9CE88;
 
-  --default-font-color: #f5f3f5;
-  /* --default-font-color: #ebf2fa; */
-  /* --default-font-color: white; */
+  --font-color: #f5f3f5;
 
   --scrollbar-thumb-color: #88888888;
   --scrollbar-thumb-hover-color: #888888;
 
   --code-bg-color: #13505B;
   --code-color: #D7D9CE;
+
+  --highlight-color: #F18701;
+  --important-link-color: #FFC857;
 }

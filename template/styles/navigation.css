@@ -15,7 +15,7 @@
 
 #navigation ul,
 #navigation li {
-  color: var(--link-color);
+  color: var(--font-color);
   list-style: none;
 }
 
@@ -29,12 +29,7 @@
 
 #navigation ul a,
 #navigation ul a:visited {
-  color: var(--link-color);
-  text-decoration: underline;
-}
-
-#navigation ul a.active {
-  color: red;
+  color: var(--font-color);
   text-decoration: underline;
 }
 

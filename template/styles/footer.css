@@ -21,6 +21,6 @@
 #footer a,
 #footer a:hover,
 #footer a:visited {
-  color: var(--default-font-color);
+  color: var(--font-color);
   text-decoration: underline;
 }
