@@ -1,4 +1,4 @@
-import { copyFileSync, existsSync, lstatSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'fs'
+import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'fs'
 import { readFile, writeFile, copyFile } from 'fs/promises'
 import path from 'path'
 import Input from './input'
@@ -8,8 +8,6 @@ import { Converter } from 'showdown'
  * Generator class.
  */
 class Generator {
-  private project: string
-  private template: string
   private output: string
   private index: string
   private inputs: Input[]
@@ -18,19 +16,15 @@ class Generator {
   /**
    * Constructor.
    *
-   * @param project The project name.
-   * @param template The template folder to get the basic information from.
    * @param output The output directory to place everything to.
    * @param index The main index file.
    * @param inputs The inputs to generate everything from.
    */
-  constructor (project: string, template: string, output: string, index: string, inputs: Input[]) {
-    this.project = project
-    this.template = template
+  constructor (output: string, index: string, inputs: Input[]) {
     this.output = output
     this.index = index
     this.inputs = inputs
-    this.base = readFileSync(path.join(template, 'template.html')).toString()
+    this.base = readFileSync(path.join('template', 'template.html')).toString()
   }
 
   /**
@@ -84,12 +78,6 @@ class Generator {
     this.createDirectory(outputDirectory)
     this.createDirectory(outputFile)
 
-    // Try not to update the files if we don't need to.
-    if (existsSync(outputFile) && (lstatSync(outputFile).mtime > lstatSync(path.join(this.template, 'template.html')).mtime || lstatSync(outputFile).mtime > lstatSync(file).mtime)) {
-      console.log('Skipping', file)
-      return
-    }
-
     // Convert just the markdown files and copy the rest of them.
     if (file.endsWith('.md')) {
       return readFile(file).then((data) => {
@@ -101,7 +89,6 @@ class Generator {
         let content = this.base.replaceAll('{title}', name)
         content = content.replaceAll('{navigation}', this.prepareNavigation(outputDirectory))
         content = content.replaceAll('{jump}', this.generateJumpTable(html))
-        content = content.replaceAll('{project}', this.project)
         content = content.replaceAll('{file}', path.parse(file).name)
         content = content.replaceAll('{content}', html)
         content = content.replaceAll(/href="(?!www\.|(?:http|ftp)s?)(.*).md"/g, 'href="$1.html"')
@@ -129,10 +116,9 @@ class Generator {
     const converter = new Converter({ strikethrough: true, tables: true })
     const html = converter.makeHtml(readFileSync(this.index).toString())
 
-    let content = this.base.replaceAll('{title}', this.project)
+    let content = this.base.replaceAll('{title}', 'Nexonous')
     content = content.replaceAll('{navigation}', this.prepareNavigation(this.output))
     content = content.replaceAll('{jump}', this.generateJumpTable(html))
-    content = content.replaceAll('{project}', this.project)
     content = content.replaceAll('{file}', path.parse(this.index).name)
     content = content.replaceAll('{content}', html)
     content = content.replaceAll(/href="(?!www\.|(?:http|ftp)s?)(.*).md"/g, 'href="$1.html"')
@@ -143,9 +129,9 @@ class Generator {
    * Copy the assets, scripts and styles from the template folder to the output directory.
    */
   private async copyTemplateFolders () {
-    this.copyFiles(path.join(this.template, 'assets'), path.join(this.output, 'assets'))
-    this.copyFiles(path.join(this.template, 'scripts'), path.join(this.output, 'scripts'))
-    this.copyFiles(path.join(this.template, 'styles'), path.join(this.output, 'styles'))
+    this.copyFiles(path.join('template', 'assets'), path.join(this.output, 'assets'))
+    this.copyFiles(path.join('template', 'scripts'), path.join(this.output, 'scripts'))
+    this.copyFiles(path.join('template', 'styles'), path.join(this.output, 'styles'))
   }
 
   /**
