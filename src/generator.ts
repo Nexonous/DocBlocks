@@ -119,7 +119,7 @@ class Generator {
    * @return The writer promise.
   */
   private async generateIndexFile () {
-    const outputFile = path.join(this.output, '404.html')
+    const outputFile = path.join(this.output, 'index.html')
     this.createDirectory(this.output)
 
     return readFile(this.index).then((data) => {
