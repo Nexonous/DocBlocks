@@ -10,6 +10,7 @@ import { Converter } from 'showdown'
 class Generator {
   private output: string
   private index: string
+  private notFound: string
   private inputs: Input[]
   private base: string
 
@@ -20,9 +21,10 @@ class Generator {
    * @param index The main index file.
    * @param inputs The inputs to generate everything from.
    */
-  constructor (output: string, index: string, inputs: Input[]) {
+  constructor (output: string, index: string, notFound: string, inputs: Input[]) {
     this.output = output
     this.index = index
+    this.notFound = notFound
     this.inputs = inputs
     this.base = readFileSync(path.join('template', 'template.html')).toString()
   }
@@ -43,6 +45,7 @@ class Generator {
     }
 
     this.generateIndexFile()
+    this.generateNotFoundFile()
     this.copyTemplateFolders()
 
     return Promise.all(workers)
@@ -81,7 +84,7 @@ class Generator {
     // Convert just the markdown files and copy the rest of them.
     if (file.endsWith('.md')) {
       return readFile(file).then((data) => {
-        console.log('Converting', `"${file}"`)
+        console.log('Generating HTML using', `"${file}"`)
 
         const converter = new Converter({ strikethrough: true, tables: true })
         const html = converter.makeHtml(data.toString())
@@ -113,7 +116,10 @@ class Generator {
    * Generate the main index file.
    */
   private async generateIndexFile () {
-    const converter = new Converter({ strikethrough: true, tables: true })
+    console.log('Generating HTML using', `"${this.index}"`)
+    this.createDirectory(this.output)
+
+    const converter = new Converter({ strikethrough: true, tables: true, emoji: true })
     const html = converter.makeHtml(readFileSync(this.index).toString())
 
     let content = this.base.replaceAll('{title}', 'Nexonous')
@@ -123,6 +129,25 @@ class Generator {
     content = content.replaceAll('{content}', html)
     content = content.replaceAll(/href="(?!www\.|(?:http|ftp)s?)(.*).md"/g, 'href="$1.html"')
     writeFileSync(path.join(this.output, 'index.html'), content)
+  }
+
+  /**
+   * Generate the not found file.
+   */
+  private async generateNotFoundFile () {
+    console.log('Generating HTML using', `"${this.notFound}"`)
+    this.createDirectory(this.output)
+
+    const converter = new Converter({ strikethrough: true, tables: true, emoji: true })
+    const html = converter.makeHtml(readFileSync(this.notFound).toString())
+
+    let content = this.base.replaceAll('{title}', 'Nexonous')
+    content = content.replaceAll('{navigation}', this.prepareNavigation(this.output))
+    content = content.replaceAll('{jump}', this.generateJumpTable(html))
+    content = content.replaceAll('{file}', path.parse(this.notFound).name)
+    content = content.replaceAll('{content}', html)
+    content = content.replaceAll(/href="(?!www\.|(?:http|ftp)s?)(.*).md"/g, 'href="$1.html"')
+    writeFileSync(path.join(this.output, path.parse(this.notFound).name.replaceAll(' ', '-') + '.html'), content)
   }
 
   /**

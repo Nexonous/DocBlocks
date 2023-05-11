@@ -4,8 +4,8 @@
   "description": "Documentation website builder.",
   "main": "out/index.js",
   "scripts": {
-    "test": "nodemon src/server.ts 'out/public' --watch src --watch testing --watch template --watch docs --ext js,ts,md,html,css,js'",
-    "start": "tsc && node out/index.js",
+    "test": "nodemon src/test.ts 'out/public' --watch src --watch testing --watch template --watch docs --ext js,ts,md,html,css,js'",
+    "build": "tsc && node out/index.js",
     "serve": "tsc && node out/server.js"
   },
   "repository": {
