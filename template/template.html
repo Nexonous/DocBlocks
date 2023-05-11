@@ -20,6 +20,7 @@
   <link rel="stylesheet" href="/styles/navigation.css" />
   <link rel="stylesheet" href="/styles/search-box.css" />
   <link rel="stylesheet" href="/styles/content.css" />
+  <link rel="stylesheet" href="/styles/back-to-top.css" />
   <link rel="stylesheet" href="/styles/jump.css" />
   <link rel="stylesheet" href="/styles/footer.css" />
 </head>
@@ -27,8 +28,8 @@
 <body>
   <ul id="topbar">
     <li><a href="https://nexonous.com" target="_blank"><img src="/assets/Logo.png" alt="Nexonous Logo" /></a></li>
-    <li><a id="title" href="/index.html">Home</a></li>
-    <li id="search">Search</li>
+    <li><a id="title" href="/">HOME</a></li>
+    <li id="search">SEARCH</li>
   </ul>
 
   <aside>
@@ -48,6 +49,7 @@
       </div>
     </div>
     <div id="content">{content}</div>
+    <div id="back-to-top"><img src="/assets/up-arrow.png" alt="Back To Top" /></div>
     <div id="jump">{jump}</div>
   </main>
 
@@ -60,6 +62,8 @@
   </script>
 
   <script src="/scripts/main.js"></script>
+  <script src="/scripts/navigation.js"></script>
+  <script src="/scripts/back-to-top.js"></script>
 </body>
 
 </html>

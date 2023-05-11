@@ -2,10 +2,10 @@ import express from 'express'
 import Generator from './generator'
 import Input from './input'
 
-const generator = new Generator('public', 'content/Index.md', 'README.md', [
+const generator = new Generator('public', 'content/Index.md', 'content/Not Found.md', [
   Input.fromDirectory('Project A', 'testing/Project A'),
   Input.fromDirectory('Project B', 'testing/Project B'),
-  Input.fromDirectory('Documentation', 'docs')
+  Input.fromDirectory('Documentation Tool', 'docs')
 ])
 
 generator.generate().then(() => {

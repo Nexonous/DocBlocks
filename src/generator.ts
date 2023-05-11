@@ -239,11 +239,10 @@ class Generator {
       const files = this.getAllFiles(input.directory)
       if (files.length === 0) { continue }
 
-      const inputDirectory = path.join(input.directory)
-
-      html += '<ul>'
+      html += `<ul>${this.generateParentLine(input.name, relative)}<ul>`
 
       // Walk through the source tree recursively and process the files.
+      const inputDirectory = path.join(input.directory)
       this.walkDirectoryRecursively(inputDirectory, (file: string, directory: string, level: number) => {
         // Skip the index files since it's already given to the directory name.
         if (path.parse(file).name.toLowerCase() === 'index' && path.parse(file).ext.toLowerCase() === '.md') { return }
@@ -264,15 +263,32 @@ class Generator {
         } else {
           html += `<li class="directory">${directory}</li>`
         }
-        html += '<ul>'
-      }, () => {
-        html += '</ul>'
-      })
 
-      html += '</ul>'
+        html += '<ul>'
+      }, () => { html += '</ul>' })
+
+      html += '</ul></ul>'
     }
 
     return html
+  }
+
+  /**
+   * Get the parent path line.
+   *
+   * @param name The parent name.
+   * @param relative The relative path to get from.
+   * @returns The HTML line.
+   */
+  private generateParentLine (name: string, relative: string) {
+    const outputDirectory = path.join(this.output, name).replaceAll(' ', '-')
+    const indexFile = this.findIndexFileOfDirectory(relative, outputDirectory, outputDirectory)
+
+    if (indexFile != null) {
+      return `<li class="directory"><a href="${indexFile}">${name}</a></li>`
+    } else {
+      return `<li class="directory">${name}</li>`
+    }
   }
 
   /**
@@ -288,7 +304,7 @@ class Generator {
     if (existsSync(directory)) {
       const files = readdirSync(directory)
       files.forEach(file => {
-        if (file.toLowerCase() === 'index.md') {
+        if (file.toLowerCase() === 'index.md' || file.toLowerCase() === 'index.html') {
           indexFile = path.relative(relative, path.join(outputDirectory, path.parse(file).name + '.html'))
         }
       })
@@ -308,17 +324,17 @@ class Generator {
    */
   private walkDirectoryRecursively (directory: string, walker: (file: string, directory: string, level: number) => void, onDirectoryPush: (directory: string) => void, onDirectoryPop: () => void, level: number = 0) {
     if (existsSync(directory)) {
-      onDirectoryPush(directory)
       readdirSync(directory).forEach(file => {
         const name = path.join(directory, file)
 
         if (statSync(name).isDirectory()) {
+          onDirectoryPush(name)
           this.walkDirectoryRecursively(name, walker, onDirectoryPush, onDirectoryPop, level + 1)
+          onDirectoryPop()
         } else {
           walker(name, directory, level)
         }
       })
-      onDirectoryPop()
     }
   }
 

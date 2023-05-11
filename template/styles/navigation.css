@@ -36,5 +36,10 @@
 #navigation h1 {
   text-align: center;
   width: 100%;
-  /* color: #FFC857; */
+}
+
+#navigation ul a.active {
+  /* color: var(--highlight-color); */
+  color: var(--important-link-color);
+  text-decoration: underline;
 }
