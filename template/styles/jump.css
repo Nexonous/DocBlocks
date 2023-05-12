@@ -1,13 +1,43 @@
-#jump {
-  max-height: 80%;
-  min-width: 15%;
-  width: 15%;
-  top: 10%;
-  right: 1%;
+#jump-bar {
+  height: 100%;
+  width: var(--sidebar-hover-width);
+
+  top: 0;
+  right: 0;
+
   position: fixed;
 
-  padding-top: 1%;
-  padding-bottom: 1%;
+  overflow: hidden;
+}
+
+#jump {
+  height: 100%;
+  width: 0;
+
+  top: 0;
+  right: 0;
+
+  position: fixed;
+
+  background-color: var(--main-bg-color);
+
+  border-color: var(--border-color);
+  border-width: 0 0 0 1px;
+  border-style: solid;
+
+  padding-top: 50px;
+
+  transition: 1s;
+  white-space: nowrap;
+}
+
+#jump-bar:hover #jump {
+  -webkit-transition: width 1s ease-in-out;
+  -moz-transition: width 1s ease-in-out;
+  -o-transition: width 1s ease-in-out;
+  transition: width 1s ease-in-out;
+
+  width: var(--sidebar-width);
 }
 
 #jump li {
@@ -33,4 +63,8 @@
   font-size: 14px;
   color: var(--link-color);
   text-decoration: underline;
+}
+
+#jump p {
+  text-align: center;
 }

@@ -1,16 +1,49 @@
-#navigation {
+#navigation-bar {
   height: 100%;
-  width: 15%;
+  width: var(--sidebar-hover-width);
+
   position: fixed;
-  z-index: 1;
+
   top: 0;
   left: 0;
+
+  overflow: hidden;
+}
+
+#navigation {
+  height: 100%;
+  width: 0;
+
+  position: fixed;
+  z-index: 1;
+
+  top: 0;
+  left: 0;
+
   overflow-x: hidden;
-  padding-top: 3%;
+  padding-top: 40px;
+
+  background-color: var(--main-bg-color);
 
   border-color: var(--border-color);
   border-width: 0 1px 0 0;
   border-style: solid;
+
+  transition: 1s;
+  white-space: nowrap;
+}
+
+#navigation-bar:hover #navigation {
+  -webkit-transition: width 1s ease-in-out;
+  -moz-transition: width 1s ease-in-out;
+  -o-transition: width 1s ease-in-out;
+  transition: width 1s ease-in-out;
+
+  width: var(--sidebar-width);
+}
+
+#navigation-bar.expand #navigation {
+  width: var(--sidebar-width);
 }
 
 #navigation ul,

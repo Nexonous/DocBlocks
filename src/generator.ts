@@ -51,6 +51,7 @@ class Generator {
 
     workers.push(this.generateIndexFile())
     workers.push(this.generateNotFoundFile())
+    workers.push(this.generateCatalogFile())
 
     return Promise.all(workers)
   }
@@ -155,6 +156,60 @@ class Generator {
       content = content.replaceAll(/href="(?!www\.|(?:http|ftp)s?)(.*).md"/g, 'href="$1.html"')
       return writeFile(outputFile, content)
     })
+  }
+
+  /**
+   * Generate the catalog files.
+   *
+   * @returns The catalog file worker.
+   */
+  private async generateCatalogFile () {
+    const outputFile = path.join(this.output, 'catalog.html')
+    this.createDirectory(this.output)
+    console.log('Generating HTML from', `"${this.index}"`, 'to', `"${outputFile}"`)
+
+    let html = '<h1 id="catalog">Catalog 📚</h1>'
+    html += '<p>This page contains information about all the web pages and documentation stored in the website. You can use this as a quick jump to find documentation about everything in the versioning order.</p>'
+
+    for (const input of this.inputs) {
+      html += `<h2 id="${input.name.toLowerCase().replaceAll(' ', '')}">${input.name}</h2>`
+      for (const version of input.versions) {
+        html += `<h3 id="version-${version.version.toLowerCase().replaceAll(' ', '')}">Version: ${version.version}</h3>`
+        html += '<ul>'
+        this.walkDirectoryRecursively(version.directory, (file: string, _directory: string, level: number) => {
+          const outputDirectory = path.join(this.output, input.name, this.processVersion(version.version), path.parse(file).dir.replace(path.join(version.directory), '')).replaceAll(' ', '-')
+          const filepath = path.relative(this.output, path.join(outputDirectory, path.parse(file).name.replaceAll(' ', '-') + '.html'))
+          const filename = path.parse(file.replace(version.directory + path.sep, '')).name
+
+          html += `<li class="file"><a href="${filepath}">${filename}</a></li>`
+        },
+        (directory: string) => {
+          const outputDirectory = path.join(this.output, directory).replaceAll(' ', '-')
+          const indexFile = this.findIndexFileOfDirectory(this.output, outputDirectory, directory)
+
+          directory = path.parse(directory).name
+          if (indexFile != null) {
+            const filepath = path.relative(this.output, path.join(outputDirectory, path.parse(indexFile).name.replaceAll(' ', '-') + '.html'))
+            html += `<li class="directory"><a href="${filepath}">${directory}</a></li>`
+          } else {
+            html += `<li class="directory">${directory}</li>`
+          }
+
+          html += '<ul>'
+        }, () => { html += '</ul>' })
+        html += '</ul>'
+      }
+    }
+
+    let content = this.base.replaceAll('{title}', 'Projects')
+    content = content.replaceAll('{topbar}', this.prepareTopbar())
+    content = content.replaceAll('{version}', '')
+    content = content.replaceAll('{navigation}', this.generateGlobalNavigation())
+    content = content.replaceAll('{jump}', '')
+    content = content.replaceAll('{file}', 'Projects')
+    content = content.replaceAll('{content}', html)
+    content = content.replaceAll(/href="(?!www\.|(?:http|ftp)s?)(.*).md"/g, 'href="$1.html"')
+    return writeFile(outputFile, content)
   }
 
   /**
