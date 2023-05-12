@@ -5,6 +5,10 @@
   top: 0;
   right: 0;
 
+  border-width: 0 var(--sidebar-border-width) 0 0;
+  border-color: var(--sidebar-border-color);
+  border-style: solid;
+
   position: fixed;
 
   overflow: hidden;
@@ -43,12 +47,12 @@
 #jump li {
   width: 100%;
   list-style: none;
-  padding-left: 10%;
-  padding-bottom: 1%;
+  padding-left: 10px;
+  padding-bottom: 2px;
 }
 
 #jump ul {
-  padding-left: 1rem;
+  padding-left: 10px;
 }
 
 #jump a,

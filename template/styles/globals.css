@@ -3,7 +3,7 @@
 
   --line-color: #D7D9CE;
   --link-color: #119DA4;
-  
+
   --border-color: #D7D9CE88;
 
   --font-color: #f5f3f5;
@@ -19,4 +19,6 @@
 
   --sidebar-width: 300px;
   --sidebar-hover-width: 100px;
+  --sidebar-border-width: 10px;
+  --sidebar-border-color: #D7D9CE44;
 }

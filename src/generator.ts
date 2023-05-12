@@ -127,7 +127,7 @@ class Generator {
    * @param input The input to generate from.
    * @param version The input version to generate from.
    */
-  private async generateFromGit (input: Input, version: Version) {
+  private async generateFromGit (_input: Input, _version: Version) {
     console.log('Generating HTML files from git links are not supported for now!')
   }
 
@@ -168,20 +168,20 @@ class Generator {
     this.createDirectory(this.output)
     console.log('Generating HTML from', `"${this.index}"`, 'to', `"${outputFile}"`)
 
-    let html = '<h1 id="catalog">Catalog 📚</h1>'
-    html += '<p>This page contains information about all the web pages and documentation stored in the website. You can use this as a quick jump to find documentation about everything in the versioning order.</p>'
+    let html = '<h1 id="catalog">Catalog 📚</h1>\r\n'
+    html += '<p>This page contains information about all the web pages and documentation stored in the website. You can use this as a quick jump to find documentation about everything in the versioning order.</p>\r\n'
 
     for (const input of this.inputs) {
-      html += `<h2 id="${input.name.toLowerCase().replaceAll(' ', '')}">${input.name}</h2>`
+      html += `<h2 id="${input.name.toLowerCase().replaceAll(' ', '')}">${input.name}</h2>\r\n`
       for (const version of input.versions) {
-        html += `<h3 id="version-${version.version.toLowerCase().replaceAll(' ', '')}">Version: ${version.version}</h3>`
-        html += '<ul>'
-        this.walkDirectoryRecursively(version.directory, (file: string, _directory: string, level: number) => {
+        html += `<h3 id="version-${version.version.toLowerCase().replaceAll(' ', '')}">Version: ${version.version}</h3>\r\n`
+        html += '<ul>\r\n'
+        this.walkDirectoryRecursively(version.directory, (file: string, _directory: string, _level: number) => {
           const outputDirectory = path.join(this.output, input.name, this.processVersion(version.version), path.parse(file).dir.replace(path.join(version.directory), '')).replaceAll(' ', '-')
           const filepath = path.relative(this.output, path.join(outputDirectory, path.parse(file).name.replaceAll(' ', '-') + '.html'))
           const filename = path.parse(file.replace(version.directory + path.sep, '')).name
 
-          html += `<li class="file"><a href="${filepath}">${filename}</a></li>`
+          html += `<li class="file"><a href="${filepath}">${filename}</a></li>\r\n`
         },
         (directory: string) => {
           const outputDirectory = path.join(this.output, directory).replaceAll(' ', '-')
@@ -190,14 +190,14 @@ class Generator {
           directory = path.parse(directory).name
           if (indexFile != null) {
             const filepath = path.relative(this.output, path.join(outputDirectory, path.parse(indexFile).name.replaceAll(' ', '-') + '.html'))
-            html += `<li class="directory"><a href="${filepath}">${directory}</a></li>`
+            html += `<li class="directory"><a href="${filepath}">${directory}</a></li>\r\n`
           } else {
-            html += `<li class="directory">${directory}</li>`
+            html += `<li class="directory">${directory}</li>\r\n`
           }
 
-          html += '<ul>'
-        }, () => { html += '</ul>' })
-        html += '</ul>'
+          html += '<ul>\r\n'
+        }, () => { html += '</ul>\r\n' })
+        html += '</ul>\r\n'
       }
     }
 
@@ -205,7 +205,7 @@ class Generator {
     content = content.replaceAll('{topbar}', this.prepareTopbar())
     content = content.replaceAll('{version}', '')
     content = content.replaceAll('{navigation}', this.generateGlobalNavigation())
-    content = content.replaceAll('{jump}', '')
+    content = content.replaceAll('{jump}', this.generateJumpTable(html))
     content = content.replaceAll('{file}', 'Projects')
     content = content.replaceAll('{content}', html)
     content = content.replaceAll(/href="(?!www\.|(?:http|ftp)s?)(.*).md"/g, 'href="$1.html"')
@@ -340,7 +340,7 @@ class Generator {
 
     // Walk through the source tree recursively and process the files.
     const inputDirectory = path.join(directory)
-    this.walkDirectoryRecursively(inputDirectory, (file: string, _directory: string, level: number) => {
+    this.walkDirectoryRecursively(inputDirectory, (file: string, _directory: string, _level: number) => {
       // Skip the index files since it's already given to the directory name.
       if (path.parse(file).name.toLowerCase() === 'index' && path.parse(file).ext.toLowerCase() === '.md') { return }
 
@@ -452,7 +452,7 @@ class Generator {
   private generateJumpTable (content: string): string {
     let jump = ''
     let level: number = -1
-    for (const item of content.matchAll(/<h(\d) id="(.*)">(.*)<\/h\d>/g)) {
+    for (const item of content.matchAll(/<h(\d) id="(.*)">(.*)<\/h\1>/g)) {
       const currentValue = +item[1]
       if (currentValue > level) {
         jump += '<ul>'

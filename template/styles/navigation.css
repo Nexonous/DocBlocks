@@ -4,6 +4,10 @@
 
   position: fixed;
 
+  border-width: 0 0 0 var(--sidebar-border-width);
+  border-color: var(--sidebar-border-color);
+  border-style: solid;
+
   top: 0;
   left: 0;
 
@@ -102,5 +106,5 @@
   border-width: 0 0 1px 0;
   border-style: solid;
 
-  padding-bottom: 10%;
+  padding-bottom: 15px;
 }
