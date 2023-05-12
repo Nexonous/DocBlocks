@@ -6,7 +6,7 @@
   top: 0;
   left: 0;
   overflow-x: hidden;
-  padding-top: 5%;
+  padding-top: 3%;
 
   border-color: var(--border-color);
   border-width: 0 1px 0 0;
@@ -25,6 +25,7 @@
 
 #navigation ul {
   padding-left: 1rem;
+  padding-bottom: 0;
 }
 
 #navigation ul a,
@@ -33,13 +34,40 @@
   text-decoration: underline;
 }
 
-#navigation h1 {
+#navigation ul.global a,
+#navigation ul.global a:visited,
+#navigation h1 a,
+#navigation h1 a:visited {
+  color: var(--font-color);
+  text-decoration: none;
+}
+
+#navigation ul.global a:hover {
+  text-decoration: underline;
+}
+
+#navigation h1,
+#navigation p {
   text-align: center;
   width: 100%;
 }
 
 #navigation ul a.active {
-  /* color: var(--highlight-color); */
   color: var(--important-link-color);
   text-decoration: underline;
+}
+
+#navigation h1 a.active {
+  color: var(--important-link-color);
+  text-decoration: none;
+}
+
+#navigation #version {
+  color: #888888;
+  width: 100%;
+
+  border-width: 0 0 1px 0;
+  border-style: solid;
+
+  padding-bottom: 10%;
 }

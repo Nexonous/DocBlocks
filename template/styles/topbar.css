@@ -22,6 +22,8 @@
   list-style: none;
 
   overflow: hidden;
+
+  white-space: nowrap;
 }
 
 #topbar li,
@@ -52,11 +54,11 @@
 }
 
 #topbar img {
+  width: 50px;
   height: 50px;
 }
 
-#topbar #title,
-#topbar #search {
+#topbar li {
   display: flex;
   right: 0;
   height: 100%;

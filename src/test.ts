@@ -1,11 +1,12 @@
 import express from 'express'
 import Generator from './generator'
 import Input from './input'
+import Version from './version'
 
 const generator = new Generator('public', 'content/Index.md', 'content/Not Found.md', [
-  Input.fromDirectory('Project A', 'testing/Project A'),
-  Input.fromDirectory('Project B', 'testing/Project B'),
-  Input.fromDirectory('Documentation Tool', 'docs')
+  new Input('Project A').addVersion(Version.fromDirectory('testing/Project A')),
+  new Input('Project B').addVersion(Version.fromDirectory('testing/Project B')),
+  new Input('Documentation Tool').addVersion(Version.fromDirectory('docs')).addVersion(Version.fromDirectory('docs', 'v1.0'))
 ])
 
 generator.generate().then(() => {

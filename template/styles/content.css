@@ -47,3 +47,7 @@
   color: var(--link-color);
   text-decoration: underline;
 }
+
+#content strong em {
+  color: var(--highlight-color);
+}

@@ -1,4 +1,6 @@
-# Writing Content
+# Writing Content ✍️
+
+***Note that this topic is mostly for the Nexonous developers who contribute to our projects.***
 
 Writing content that is recognizable by the parser is essential when writing documentation that is to be presented using this tool. Basically we use Markdown files since it's super easy to use and is supported by almost all the major version control systems. Since we're using GitHub, it's way easier for us to see them in action when needed. But the markdown generator we use has a couple of things we need to setup before we move forward.
 
@@ -13,3 +15,5 @@ Writing content that is recognizable by the parser is essential when writing doc
 4. Don't hesitate to add emojis 😌
     - The parser supports emojis and they work as expected so don't shy away form using them!
     - Just make sure whatever the emojis you use aren't offensive (for obvious reasons).
+5. Surround by 3 asterisks (`'***'`) for important statements, like the one on this page!
+    - For example: `***This is something super important!***` gets rendered as: ***This is something super important!***.

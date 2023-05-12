@@ -1,4 +1,4 @@
-# Documentation Inputs
+# Documentation Inputs ⚙️
 
 The documentation inputs are objects that store information about the name of the input and source information. The source information varies depending on the input type and for now there are two main types,
 
