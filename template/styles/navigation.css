@@ -4,10 +4,6 @@
 
   position: fixed;
 
-  border-width: 0 0 0 var(--sidebar-border-width);
-  border-color: var(--sidebar-border-color);
-  border-style: solid;
-
   top: 0;
   left: 0;
 
@@ -16,7 +12,7 @@
 
 #navigation {
   height: 100%;
-  width: 0;
+  width: var(--sidebar-width-landscape);
 
   position: fixed;
   z-index: 1;
@@ -32,22 +28,6 @@
   border-color: var(--border-color);
   border-width: 0 1px 0 0;
   border-style: solid;
-
-  transition: 1s;
-  white-space: nowrap;
-}
-
-#navigation-bar:hover #navigation {
-  -webkit-transition: width 1s ease-in-out;
-  -moz-transition: width 1s ease-in-out;
-  -o-transition: width 1s ease-in-out;
-  transition: width 1s ease-in-out;
-
-  width: var(--sidebar-width);
-}
-
-#navigation-bar.expand #navigation {
-  width: var(--sidebar-width);
 }
 
 #navigation ul,
@@ -107,4 +87,22 @@
   border-style: solid;
 
   padding-bottom: 15px;
+}
+
+@media (orientation: portrait) {
+  #navigation {
+    width: 0;
+
+    transition: 1s;
+    white-space: nowrap;
+  }
+
+  #navigation-bar:hover #navigation {
+    -webkit-transition: width 1s ease-in-out;
+    -moz-transition: width 1s ease-in-out;
+    -o-transition: width 1s ease-in-out;
+    transition: width 1s ease-in-out;
+
+    width: var(--sidebar-width-portrait);
+  }
 }

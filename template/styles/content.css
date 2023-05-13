@@ -1,7 +1,7 @@
 #content {
   padding-top: 40px;
-  padding-left: var(--sidebar-hover-width);
-  padding-right: var(--sidebar-hover-width);
+  padding-left: calc(var(--sidebar-hover-width) + var(--sidebar-width-landscape));
+  padding-right: calc(var(--sidebar-hover-width) + var(--sidebar-width-landscape));
 }
 
 #content :is(h1, h2, h3, h4, h5, h6)[id] {
@@ -52,4 +52,11 @@
 
 #content strong em {
   color: var(--highlight-color);
+}
+
+@media (orientation: portrait) {
+  #content {
+    padding-left: var(--sidebar-width-landscape);
+    padding-right: var(--sidebar-width-landscape);
+  }
 }

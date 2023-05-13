@@ -17,7 +17,8 @@
   --highlight-color: #F18701;
   --important-link-color: #FFC857;
 
-  --sidebar-width: 300px;
+  --sidebar-width-landscape: 300px;
+  --sidebar-width-portrait: 50%;
   --sidebar-hover-width: 100px;
   --sidebar-border-width: 10px;
   --sidebar-border-color: #D7D9CE44;

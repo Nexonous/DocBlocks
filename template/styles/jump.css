@@ -5,10 +5,6 @@
   top: 0;
   right: 0;
 
-  border-width: 0 var(--sidebar-border-width) 0 0;
-  border-color: var(--sidebar-border-color);
-  border-style: solid;
-
   position: fixed;
 
   overflow: hidden;
@@ -16,7 +12,7 @@
 
 #jump {
   height: 100%;
-  width: 0;
+  width: var(--sidebar-width-landscape);
 
   top: 0;
   right: 0;
@@ -25,23 +21,10 @@
 
   background-color: var(--main-bg-color);
 
-  border-color: var(--border-color);
-  border-width: 0 0 0 1px;
-  border-style: solid;
-
   padding-top: 50px;
 
   transition: 1s;
   white-space: nowrap;
-}
-
-#jump-bar:hover #jump {
-  -webkit-transition: width 1s ease-in-out;
-  -moz-transition: width 1s ease-in-out;
-  -o-transition: width 1s ease-in-out;
-  transition: width 1s ease-in-out;
-
-  width: var(--sidebar-width);
 }
 
 #jump li {
@@ -71,4 +54,23 @@
 
 #jump p {
   text-align: center;
+}
+
+@media (orientation: portrait) {
+  #jump {
+    width: 0;
+
+    border-color: var(--border-color);
+    border-width: 0 0 0 1px;
+    border-style: solid;
+  }
+
+  #jump-bar:hover #jump {
+    -webkit-transition: width 1s ease-in-out;
+    -moz-transition: width 1s ease-in-out;
+    -o-transition: width 1s ease-in-out;
+    transition: width 1s ease-in-out;
+
+    width: var(--sidebar-width-portrait);
+  }
 }
