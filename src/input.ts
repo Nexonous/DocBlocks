@@ -1,42 +1,33 @@
+import Version from './version'
+
 /**
  * Input class.
  * This class information regarding a single documentation input.
  */
 class Input {
   public name: string
-  public directory: string
-  public git: string
-  public auth: string
-
-  constructor () {
-    this.name = ''
-    this.directory = ''
-    this.git = ''
-    this.auth = ''
-  }
+  public versions: Version[]
 
   /**
-   * Create a new input from a directory.
+   * Constructor.
    *
    * @param name The name of the input.
-   * @param directory The input directory.
-   * @returns The created input object.
    */
-  static fromDirectory (name: string, directory: string) {
-    const input = new Input()
-    input.name = name
-    input.directory = directory
-
-    return input
+  constructor (name: string) {
+    this.name = name
+    this.versions = []
   }
 
   /**
-   * Check if the input is a directory.
+   * Add a new version to the input.
    *
-   * @returns true if the input is a directory.
-   * @returns false if the input is a GIT link.
+   * @param version The new version to add.
+   * @returns The input reference.
    */
-  public isDirectory (): boolean { return this.directory.length > 0 }
+  public addVersion (version: Version) {
+    this.versions.push(version)
+    return this
+  }
 }
 
 export = Input

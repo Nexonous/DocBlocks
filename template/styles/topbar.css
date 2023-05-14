@@ -3,8 +3,7 @@
 }
 
 #topbar {
-  /* height: 5%; */
-  height: 50px;
+  height: var(--topbar-height);
   width: 100%;
   margin-top: 0;
   position: fixed;
@@ -22,6 +21,8 @@
   list-style: none;
 
   overflow: hidden;
+
+  white-space: nowrap;
 }
 
 #topbar li,
@@ -52,14 +53,15 @@
 }
 
 #topbar img {
+  width: 50px;
   height: 50px;
 }
 
-#topbar #title,
-#topbar #search {
+#topbar li {
   display: flex;
-  right: 0;
   height: 100%;
+
+  right: 0;
 
   align-items: center;
   background-color: var(--main-bg-color);

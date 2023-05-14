@@ -1,0 +1,3 @@
+[submodule "content/Peregrine/latest"]
+	path = content/Peregrine/latest
+	url = https://github.com/Nexonous/Peregrine

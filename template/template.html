@@ -20,6 +20,7 @@
   <link rel="stylesheet" href="/styles/navigation.css" />
   <link rel="stylesheet" href="/styles/search-box.css" />
   <link rel="stylesheet" href="/styles/content.css" />
+  <link rel="stylesheet" href="/styles/back-to-top.css" />
   <link rel="stylesheet" href="/styles/jump.css" />
   <link rel="stylesheet" href="/styles/footer.css" />
 </head>
@@ -27,12 +28,14 @@
 <body>
   <ul id="topbar">
     <li><a href="https://nexonous.com" target="_blank"><img src="/assets/Logo.png" alt="Nexonous Logo" /></a></li>
-    <li><a id="title" href="/index.html">Home</a></li>
-    <li id="search">Search</li>
+    <li><a href="/">HOME</a></li>
+    <li><a href="/catalog.html">CATALOG</a></li>
   </ul>
 
   <aside>
-    <div id="navigation">{navigation}</div>
+    <div id="navigation-bar">
+      <div id="navigation">{navigation}</div>
+    </div>
   </aside>
 
   <main>
@@ -48,7 +51,13 @@
       </div>
     </div>
     <div id="content">{content}</div>
-    <div id="jump">{jump}</div>
+    <div id="back-to-top"><img src="/assets/up-arrow.png" alt="Back To Top" /></div>
+    <div id="jump-bar">
+      <div id="jump">
+        <p>Quick jump</p>
+        {jump}
+      </div>
+    </div>
   </main>
 
   <footer id="footer">
@@ -60,6 +69,8 @@
   </script>
 
   <script src="/scripts/main.js"></script>
+  <script src="/scripts/navigation.js"></script>
+  <script src="/scripts/back-to-top.js"></script>
 </body>
 
 </html>
