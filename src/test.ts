@@ -6,7 +6,8 @@ import Version from './version'
 const generator = new Generator('public', 'content/Index.md', 'content/Not Found.md', [
   new Input('Project A').addVersion(Version.fromDirectory('testing/Project A')),
   new Input('Project B').addVersion(Version.fromDirectory('testing/Project B')),
-  new Input('Documentation Tool').addVersion(Version.fromDirectory('docs')).addVersion(Version.fromDirectory('docs', 'v1.0'))
+  new Input('Documentation Tool').addVersion(Version.fromDirectory('docs')).addVersion(Version.fromDirectory('docs', 'v1.0')),
+  new Input('Peregrine').addVersion(Version.fromDirectory('content/Peregrine/latest/docs'))
 ])
 
 generator.generate().then(() => {

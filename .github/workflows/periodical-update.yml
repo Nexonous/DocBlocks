@@ -1,0 +1,40 @@
+name: General build workflow
+
+on:
+  schedule:
+    - cron:  '15 3 * * 1' # Run at 3:15 AM every Monday.
+
+jobs:
+  update_submodules:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Update and create a pull request if submodule(s) is/ were updated.
+        run: |
+          export UPDATE_VERSION=$(git log -1 --format=%cd --date=format:v%Y-%m-%d-%H%M%S)
+          git config --global user.name "${GITHUB_ACTOR}"
+          git config --global user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
+
+          export UPDATE_LOGS=$(python ${{ github.workspace }}/scripts/update.py)
+          if [[ $UPDATE_LOGS == *"SUBMODULES UPDATED!"* ]]; then
+            git checkout -b updates/$UPDATE_VERSION
+            git add .
+            git commit -m "Updated submodules."
+            git push -u origin updates/$UPDATE_VERSION
+
+            echo "Updated one or more submodules automatically (on schedule)." > pull_request_body.txt
+            echo '```' >> pull_request_body.txt
+            git show --compact-summary >> pull_request_body.txt
+            echo '```' >> pull_request_body.txt
+
+            gh pr create --title "Updated documentation submodules." --body-file "pull_request_body.txt" --base release --repo $GITHUB_REPOSITORY --label documentation,automatic --reviewer NexonousAdmin
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

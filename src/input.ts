@@ -18,6 +18,12 @@ class Input {
     this.versions = []
   }
 
+  /**
+   * Add a new version to the input.
+   *
+   * @param version The new version to add.
+   * @returns The input reference.
+   */
   public addVersion (version: Version) {
     this.versions.push(version)
     return this
