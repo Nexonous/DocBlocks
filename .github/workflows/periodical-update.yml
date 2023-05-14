@@ -22,9 +22,17 @@ jobs:
 
       - name: Create an issue if a submodule is out of date and update them.
         run: |
+          export UPDATE_VERSION=$(git log -1 --format=%cd --date=format:v%Y-%m-%d-%H%M%S)
           git config --global user.name "${GITHUB_ACTOR}"
           git config --global user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
 
           python ${{ github.workspace }}/scripts/update.py
+          if [[ -z "${UPDATED}" ]]; then
+            git checkout -b updates/$UPDATE_VERSION
+            git add .
+            git commit -m "Updated submodules."
+            git push -u origin updates/$UPDATE_VERSION
+            gh pr create --title "Updated documentation submodules." --body "Updated one or more submodules automatically (on schedule)." --base release --repo $GITHUB_REPOSITORY
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

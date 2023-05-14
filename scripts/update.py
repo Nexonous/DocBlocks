@@ -49,11 +49,4 @@ if __name__ == '__main__':
                       'https://github.com/Nexonous/Peregrine')
 
     if updated:
-        new_branch_name = 'update/' + subprocess.check_output(
-            ['git', 'log', '-1', '--format=%cd', '--date=format:v%Y-%m-%d-%H%M%S']).decode().replace('\n', '')
-        subprocess.call(['git', 'checkout', '-b', new_branch_name])
-        subprocess.call(['git', 'add', '.'])
-        subprocess.call(['git', 'commit', '-m', '"Updated submodules."'])
-        subprocess.call(['git', 'push', '-u', new_branch_name])
-        subprocess.call(['gh', 'pr', 'create', '--title', 'Updated documentation submodules.', '--body',
-                        'Updated one or more submodules automatically (on schedule).', '--base', 'release'])
+        subprocess.call(['export', 'UPDATED="Submodules Updated"'])
