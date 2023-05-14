@@ -1,0 +1,36 @@
+name: General build workflow
+
+# 'on':
+#   schedule:
+#     - cron:  '15 3 * * 1' # Run at 3:15 AM every Monday.
+
+on:
+  # Triggers the workflow on push or pull request events but only for the "release" branch
+  push:
+    branches: "**"
+  pull_request:
+    branches: [ "release" ]
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Check if any submodules have new commits.
+        run: 
+
+      - name: Create an issue if a submodule is out of date.
+        run: |
+          git config --global user.name "${GITHUB_ACTOR}"
+          git config --global user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
+
+          python ${{ github.workspace }}/scripts/update.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
