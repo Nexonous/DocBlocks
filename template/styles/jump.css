@@ -22,9 +22,6 @@
   background-color: var(--main-bg-color);
 
   padding-top: 50px;
-
-  transition: 1s;
-  white-space: nowrap;
 }
 
 #jump li {
@@ -63,6 +60,9 @@
     border-color: var(--border-color);
     border-width: 0 0 0 1px;
     border-style: solid;
+
+    transition: 1s;
+    white-space: nowrap;
   }
 
   #jump-bar:hover #jump {

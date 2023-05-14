@@ -20,8 +20,10 @@
 
 #content table {
   border-collapse: collapse;
-  margin-left: auto;
-  margin-right: auto;
+  /* margin-left: auto;
+  margin-right: auto; */
+  min-width: 75%;
+  /* width: 100%; */
 }
 
 #content th,
