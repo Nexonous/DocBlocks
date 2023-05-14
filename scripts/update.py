@@ -49,4 +49,4 @@ if __name__ == '__main__':
                       'https://github.com/Nexonous/Peregrine')
 
     if updated:
-        subprocess.call(['export', 'UPDATED="Submodules Updated"'])
+        print('SUBMODULES UPDATED!')

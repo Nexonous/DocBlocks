@@ -26,8 +26,8 @@ jobs:
           git config --global user.name "${GITHUB_ACTOR}"
           git config --global user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
 
-          python ${{ github.workspace }}/scripts/update.py
-          if [[ -z "${UPDATED}" ]]; then
+          export $UPDATED=(python ${{ github.workspace }}/scripts/update.py)
+          if [[ $UPDATED == *"SUBMODULES UPDATED!"* ]]; then
             git checkout -b updates/$UPDATE_VERSION
             git add .
             git commit -m "Updated submodules."
