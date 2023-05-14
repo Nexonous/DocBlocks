@@ -35,7 +35,7 @@ jobs:
 
             export COMPACT_SUMMARY=$(git show --compact-summary)
             echo "Updated one or more submodules automatically (on schedule)." > pull_request_body.txt
-            echo "" > pull_request_body.txt
+            echo "" >> pull_request_body.txt
             echo "```" >> pull_request_body.txt
             echo $COMPACT_SUMMARY >> pull_request_body.txt
             echo "```" >> pull_request_body.txt
