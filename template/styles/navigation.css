@@ -12,7 +12,7 @@
 
 #navigation {
   height: 100%;
-  width: var(--sidebar-width-landscape);
+  width: var(--sidebar-width);
 
   position: fixed;
   z-index: 1;
@@ -21,7 +21,7 @@
   left: 0;
 
   overflow-x: hidden;
-  padding-top: 40px;
+  padding-top: var(--topbar-height);
 
   background-color: var(--main-bg-color);
 
@@ -89,6 +89,10 @@
   padding-bottom: 15px;
 }
 
+#navigation ul.global {
+  padding-top: 20px;
+}
+
 @media (orientation: portrait) {
   #navigation {
     width: 0;
@@ -103,6 +107,6 @@
     -o-transition: width 1s ease-in-out;
     transition: width 1s ease-in-out;
 
-    width: var(--sidebar-width-portrait);
+    width: var(--sidebar-width);
   }
 }

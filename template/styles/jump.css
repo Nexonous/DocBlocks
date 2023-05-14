@@ -12,7 +12,7 @@
 
 #jump {
   height: 100%;
-  width: var(--sidebar-width-landscape);
+  width: var(--sidebar-width);
 
   top: 0;
   right: 0;
@@ -21,7 +21,7 @@
 
   background-color: var(--main-bg-color);
 
-  padding-top: 50px;
+  padding-top: var(--topbar-height);
 }
 
 #jump li {
@@ -71,6 +71,6 @@
     -o-transition: width 1s ease-in-out;
     transition: width 1s ease-in-out;
 
-    width: var(--sidebar-width-portrait);
+    width: var(--sidebar-width);
   }
 }

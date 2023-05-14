@@ -1,12 +1,11 @@
 #content {
-  padding-top: 40px;
-  padding-left: calc(var(--sidebar-hover-width) + var(--sidebar-width-landscape));
-  padding-right: calc(var(--sidebar-hover-width) + var(--sidebar-width-landscape));
+  padding-top:var(--topbar-height);
+  padding-left: calc(var(--sidebar-hover-width) + var(--sidebar-width));
+  padding-right: calc(var(--sidebar-hover-width) + var(--sidebar-width));
 }
 
 #content :is(h1, h2, h3, h4, h5, h6)[id] {
-  /* scroll-margin-top: 65px; */
-  scroll-margin-top: 70px;
+  scroll-margin-top: var(--topbar-height);
   padding-top: 2%;
 }
 

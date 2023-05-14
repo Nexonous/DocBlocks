@@ -17,11 +17,17 @@
   --highlight-color: #F18701;
   --important-link-color: #FFC857;
 
-  --sidebar-width-landscape: 300px;
-  --sidebar-width-portrait: 50%;
+  --sidebar-width: 16%;
   --sidebar-hover-width: 100px;
   --sidebar-border-width: 10px;
   --sidebar-border-color: #D7D9CE44;
-
+  
   --topbar-height: 50px;
+}
+
+@media (orientation: portrait) {
+  :root {
+    --topbar-height: 100px;
+    --sidebar-width: 50%;
+  }
 }
