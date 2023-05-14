@@ -1,6 +1,8 @@
 name: General build workflow
 
 on:
+  push:
+    branches: "**"
   pull_request:
     branches: [ "release" ]
   schedule:
@@ -24,13 +26,18 @@ jobs:
           git config --global user.name "${GITHUB_ACTOR}"
           git config --global user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
 
-          export UPDATED=$(python ${{ github.workspace }}/scripts/update.py)
-          if [[ $UPDATED == *"SUBMODULES UPDATED!"* ]]; then
+          export UPDATE_LOGS=$(python ${{ github.workspace }}/scripts/update.py)
+          if [[ $UPDATE_LOGS == *"SUBMODULES UPDATED!"* ]]; then
             git checkout -b updates/$UPDATE_VERSION
             git add .
             git commit -m "Updated submodules."
             git push -u origin updates/$UPDATE_VERSION
-            gh pr create --title "Updated documentation submodules." --body "Updated one or more submodules automatically (on schedule)." --base release --repo $GITHUB_REPOSITORY
+
+            export COMPACT_SUMMARY=$(git show --compact-summary)
+            echo "Updated one or more submodules automatically (on schedule).\n" > pull_request_body.txt
+            echo $COMPACT_SUMMARY >> pull_request_body.txt
+            
+            gh pr create --title "Updated documentation submodules." --body-file "pull_request_body.txt" --base release --repo $GITHUB_REPOSITORY --label documentation
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
