@@ -4,6 +4,6 @@ import Version from './version'
 
 const generator = new Generator('public', 'content/Index.md', 'content/Not Found.md', [
   new Input('Documentation Tool').addVersion(Version.fromDirectory('docs')),
-  new Input('Peregrine').addVersion(Version.fromDirectory('content/Peregrine/latest'))
+  new Input('Peregrine').addVersion(Version.fromDirectory('content/Peregrine/latest/docs'))
 ])
 generator.generate()
