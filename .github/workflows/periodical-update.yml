@@ -23,10 +23,7 @@ jobs:
         with:
           submodules: true
 
-      - name: Check if any submodules have new commits.
-        run: 
-
-      - name: Create an issue if a submodule is out of date.
+      - name: Create an issue if a submodule is out of date and update them.
         run: |
           git config --global user.name "${GITHUB_ACTOR}"
           git config --global user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
