@@ -3,8 +3,7 @@
 }
 
 #topbar {
-  /* height: 5%; */
-  height: 50px;
+  height: var(--topbar-height);
   width: 100%;
   margin-top: 0;
   position: fixed;

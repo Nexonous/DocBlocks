@@ -41,6 +41,17 @@
   text-transform: uppercase;
 }
 
+#content table th {
+  position: -webkit-sticky; 
+  position: sticky;
+
+  top: var(--topbar-height);
+
+  z-index: 1; 
+
+  background-color: var(--main-bg-color); 
+}
+
 #content td {
   font-size: 14px;
 }
