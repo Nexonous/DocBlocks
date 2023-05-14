@@ -34,9 +34,12 @@ jobs:
             git push -u origin updates/$UPDATE_VERSION
 
             export COMPACT_SUMMARY=$(git show --compact-summary)
-            echo "Updated one or more submodules automatically (on schedule).\n" > pull_request_body.txt
+            echo "Updated one or more submodules automatically (on schedule)." > pull_request_body.txt
+            echo "" > pull_request_body.txt
+            echo "```" >> pull_request_body.txt
             echo $COMPACT_SUMMARY >> pull_request_body.txt
-            
+            echo "```" >> pull_request_body.txt
+
             gh pr create --title "Updated documentation submodules." --body-file "pull_request_body.txt" --base release --repo $GITHUB_REPOSITORY --label documentation
           fi
         env:
