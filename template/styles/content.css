@@ -58,7 +58,7 @@
 
 @media (orientation: portrait) {
   #content {
-    padding-left: var(--sidebar-width-landscape);
-    padding-right: var(--sidebar-width-landscape);
+    padding-left: calc(var(--sidebar-hover-width) / 4);
+    padding-right: calc(var(--sidebar-hover-width) / 4);
   }
 }
