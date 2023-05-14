@@ -1,5 +1,4 @@
 .separator {
-  display: flex;
   align-items: center;
 
   border-left: 1px solid var(--line-color);

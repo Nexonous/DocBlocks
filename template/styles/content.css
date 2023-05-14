@@ -1,7 +1,7 @@
 #content {
-  padding-top: 1%;
-  padding-left: 20%;
-  width: 60%;
+  padding-top: 40px;
+  padding-left: calc(var(--sidebar-hover-width) + var(--sidebar-width-landscape));
+  padding-right: calc(var(--sidebar-hover-width) + var(--sidebar-width-landscape));
 }
 
 #content :is(h1, h2, h3, h4, h5, h6)[id] {
@@ -20,6 +20,10 @@
 
 #content table {
   border-collapse: collapse;
+  /* margin-left: auto;
+  margin-right: auto; */
+  min-width: 75%;
+  /* width: 100%; */
 }
 
 #content th,
@@ -46,4 +50,15 @@
 #content a:hover {
   color: var(--link-color);
   text-decoration: underline;
+}
+
+#content strong em {
+  color: var(--highlight-color);
+}
+
+@media (orientation: portrait) {
+  #content {
+    padding-left: calc(var(--sidebar-hover-width) / 4);
+    padding-right: calc(var(--sidebar-hover-width) / 4);
+  }
 }

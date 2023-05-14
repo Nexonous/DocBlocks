@@ -1,0 +1,25 @@
+#back-to-top {
+  display: none;
+  position: fixed;
+
+  width: 40px;
+  height: 40px;
+
+  bottom: 50px;
+  right: 50px;
+
+  background-color: #119DA4;
+
+  border-radius: 20px;
+
+  cursor: pointer;
+
+  align-items: center;
+  justify-content: center;
+
+  z-index: 5;
+}
+
+#back-to-top img {
+  width: 20px;
+}
