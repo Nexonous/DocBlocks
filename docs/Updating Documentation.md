@@ -15,7 +15,7 @@ These 4 components are combined as follows: v\[Year].\[Month].\[Day].\[Build]. B
 
 But that's not the only requirement by submodules. Each repository should maintain a read-only branch that contains the versions in the following format: `version/<version number>`. If we take in the previous version as an example, the branches should look like this: `version/v2023-05-06-183000`. This is required by the update script to update the submodule to the new version and for the documentation to keep track of previous versions of the application.
 
-We will provide an automation workflow to make this process smoother but for now you need to do this manually 😉
+To make things easier, the organization has a custom action file called the Version Update Workflow that can do this process for you. Just add this actions workflow to the repository and you're good to go 😉
 
 ## Automatic Submodule Update System 🤖
 
