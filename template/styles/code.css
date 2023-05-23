@@ -23,6 +23,12 @@ pre code {
   color: var(--code-color);
 }
 
+@media (orientation: portrait) {
+  pre code {
+    font-size: 25px;
+  }
+}
+
 /* The majority of the styles are based on Atom One Dark Reasonable */
 
 pre code.hljs {
