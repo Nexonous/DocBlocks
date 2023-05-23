@@ -1,3 +1,6 @@
 [submodule "content/Peregrine/latest"]
 	path = content/Peregrine/latest
 	url = https://github.com/Nexonous/Peregrine
+[submodule "content/Peregrine/v2023-05-14-173907"]
+	path = content/Peregrine/v2023-05-14-173907
+	url = https://github.com/Nexonous/Peregrine
