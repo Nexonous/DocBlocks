@@ -33,14 +33,13 @@ def process_submodule(submodule: str, repository: str) -> None:
         global updated
         updated = True
 
-        new_directory = os.path.join(
-            submodule, previous_version)
+        new_directory = os.path.join(submodule, previous_version)
+        branch = 'version/' + previous_version
+
         print('Creating new submodule at', new_directory,
-              'and switching branches to', 'version/' + previous_version)
-        subprocess.call(['git', 'submodule', 'add', '--force', repository,
+              'and switching branches to', branch)
+        subprocess.call(['git', 'submodule', 'add', '-b', branch, '--force', repository,
                         new_directory])
-        subprocess.call(['git', 'checkout', 'version/' +
-                        previous_version], cwd=new_directory)
 
 
 if __name__ == '__main__':
