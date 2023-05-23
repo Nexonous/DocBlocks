@@ -82,14 +82,14 @@ class Generator {
    */
   async generateFromFile (file: string, name: string, directory: string, version: string) {
     const outputDirectory = path.join(this.output, name, this.processVersion(version), path.parse(file).dir.replace(path.join(directory), '')).replaceAll(' ', '-')
-    const outputFile = path.join(outputDirectory, path.parse(file).name.replaceAll(' ', '-') + '.html')
-
     this.createDirectory(outputDirectory)
-    this.createDirectory(outputFile)
 
     // Convert just the markdown files and copy the rest of them.
     if (file.endsWith('.md')) {
       return readFile(file).then((data) => {
+        const outputFile = path.join(outputDirectory, path.parse(file).name.replaceAll(' ', '-') + '.html')
+        this.createDirectory(outputFile)
+
         console.log('Generating HTML from', `"${file}"`, 'to', `"${outputFile}"`)
 
         const converter = new Converter({ strikethrough: true, tables: true })
@@ -107,7 +107,11 @@ class Generator {
         return writeFile(outputFile, content)
       })
     } else {
-      return copyFile(file, path.join(outputDirectory, outputFile))
+      const outputFile = path.join(outputDirectory, path.parse(file).base)
+      this.createDirectory(outputFile)
+
+      console.log('Copying file from', `"${file}"`, 'to', `"${outputFile}"`)
+      return copyFile(file, outputFile)
     }
   }
 
