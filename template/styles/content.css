@@ -1,5 +1,5 @@
 #content {
-  padding-top:var(--topbar-height);
+  padding-top: var(--topbar-height);
   padding-left: calc(var(--sidebar-hover-width) + var(--sidebar-width));
   padding-right: calc(var(--sidebar-hover-width) + var(--sidebar-width));
 }
@@ -41,14 +41,14 @@
 }
 
 #content table th {
-  position: -webkit-sticky; 
+  position: -webkit-sticky;
   position: sticky;
 
   top: var(--topbar-height);
 
-  z-index: 1; 
+  z-index: 1;
 
-  background-color: var(--main-bg-color); 
+  background-color: var(--main-bg-color);
 }
 
 #content td {
@@ -56,7 +56,11 @@
 }
 
 #content a,
-#content a:visited,
+#content a:visited {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
 #content a:hover {
   color: var(--link-color);
   text-decoration: underline;
@@ -66,9 +70,19 @@
   color: var(--highlight-color);
 }
 
+#content img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 @media (orientation: portrait) {
   #content {
     padding-left: calc(var(--sidebar-hover-width) / 4);
     padding-right: calc(var(--sidebar-hover-width) / 4);
+  }
+
+  #content table th {
+    top: 0;
   }
 }

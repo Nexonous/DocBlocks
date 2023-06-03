@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>{title}</title>
-  <link rel="icon" type="image/x-icon" href="/assets/Logo.png">
+  <link rel="icon" type="image/x-icon" href="/assets/Favicon.svg">
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
 
@@ -26,8 +26,8 @@
 </head>
 
 <body>
-  <ul id="topbar">
-    <li><a href="https://nexonous.com" target="_blank"><img src="/assets/Logo.png" alt="Nexonous Logo" /></a></li>
+  <ul id="topbar" class="show">
+    <li><a href="https://nexonous.com" target="_blank"><img src="/assets/Favicon.svg" alt="Nexonous Logo" /></a></li>
     <li><a href="/">HOME</a></li>
     <li><a href="/catalog.html">CATALOG</a></li>
   </ul>
@@ -54,7 +54,6 @@
     <div id="back-to-top"><img src="/assets/up-arrow.png" alt="Back To Top" /></div>
     <div id="jump-bar">
       <div id="jump">
-        <p>Quick jump</p>
         {jump}
       </div>
     </div>
@@ -68,6 +67,7 @@
     hljs.highlightAll()
   </script>
 
+  <script src="/scripts/topbar.js"></script>
   <script src="/scripts/main.js"></script>
   <script src="/scripts/navigation.js"></script>
   <script src="/scripts/back-to-top.js"></script>

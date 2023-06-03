@@ -36,7 +36,8 @@ class Generator {
    * @return The promises to wait for.
    */
   public generate () {
-    this.copyTemplateFolders()
+    this.copyTemplateFolders().catch((error) => { console.log('Failed to copy template folders! Reason:', error) })
+    this.copyContentFolders().catch((error) => { console.log('Failed to copy content folders! Reason:', error) })
 
     let workers: Promise<void>[] = []
     for (const input of this.inputs) {
@@ -154,7 +155,7 @@ class Generator {
       content = content.replaceAll('{topbar}', this.prepareTopbar())
       content = content.replaceAll('{version}', '')
       content = content.replaceAll('{navigation}', this.generateGlobalNavigation())
-      content = content.replaceAll('{jump}', this.generateJumpTable(html))
+      content = content.replaceAll('{jump}', '')
       content = content.replaceAll('{file}', path.parse(this.index).name)
       content = content.replaceAll('{content}', html)
       content = content.replaceAll(/href="(?!www\.|(?:http|ftp)s?)(.*).md"/g, 'href="$1.html"')
@@ -241,6 +242,15 @@ class Generator {
       content = content.replaceAll(/href="(?!www\.|(?:http|ftp)s?)(.*).md"/g, 'href="$1.html"')
       return writeFile(outputFile, content)
     })
+  }
+
+  /**
+   * Copy the assets, scripts and styles from the content folder to the output directory.
+   */
+  private async copyContentFolders () {
+    this.copyFiles(path.join('content', 'assets'), path.join(this.output, 'assets'))
+    this.copyFiles(path.join('content', 'scripts'), path.join(this.output, 'scripts'))
+    this.copyFiles(path.join('content', 'styles'), path.join(this.output, 'styles'))
   }
 
   /**
@@ -454,7 +464,7 @@ class Generator {
    * @returns The jump table.
    */
   private generateJumpTable (content: string): string {
-    let jump = ''
+    let jump = '<p>Quick jump</p>'
     let level: number = -1
     for (const item of content.matchAll(/<h(\d) id="(.*)">(.*)<\/h\1>/g)) {
       const currentValue = +item[1]
